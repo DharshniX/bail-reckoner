@@ -1,0 +1,47 @@
+/**
+ * Seed data: configurable bail rules.
+ * The logic for each rule lives in server/engine/ruleEngine.js (keyed by `key`).
+ * Admins can enable/disable rules and change `params` through the Admin module.
+ * Changes go into `pending` and only take effect after "Verify & publish".
+ */
+module.exports = [
+  { key: 'BAILABLE_RIGHT', name: 'Bail as of right in bailable offences',
+    description: 'If every offence is bailable, bail is a matter of right under BNSS s.478.',
+    provisionCodes: ['BNSS_478', 'BNSS_47'], params: {} },
+  { key: 'INDIGENT_BOND', name: 'Indigent person – release on personal bond',
+    description: 'If a person in a bailable case cannot furnish bail within the set number of days, they may be presumed indigent and released on bond.',
+    provisionCodes: ['BNSS_478_INDIGENT'], params: { days: 7 } },
+  { key: 'NON_BAILABLE_DISCRETION', name: 'Discretionary bail in non-bailable offences',
+    description: 'Checks the bars and exceptions in BNSS s.480(1) and suggests the right forum.',
+    provisionCodes: ['BNSS_480', 'BNSS_483'], params: {} },
+  { key: 'ANTICIPATORY_BAIL', name: 'Anticipatory bail before arrest',
+    description: 'A person not yet arrested who fears arrest for a non-bailable offence may seek anticipatory bail.',
+    provisionCodes: ['BNSS_482'], params: {} },
+  { key: 'NOTICE_OF_APPEARANCE', name: 'Notice of appearance instead of arrest',
+    description: 'For offences punishable up to the set number of years, police should ordinarily issue a notice of appearance.',
+    provisionCodes: ['BNSS_35_3'], params: { maxYears: 7 } },
+  { key: 'ELDERLY_INFIRM_ARREST', name: 'Prior permission to arrest elderly/infirm persons',
+    description: 'Arrest of a person above the set age, or infirm, for an offence below the set punishment needs prior permission of a DSP-rank officer.',
+    provisionCodes: ['BNSS_35_7'], params: { age: 60, maxYears: 3 } },
+  { key: 'DEFAULT_BAIL', name: 'Default (statutory) bail',
+    description: 'If the charge sheet is not filed within the period, the accused gets an indefeasible right to bail if they apply in time.',
+    provisionCodes: ['BNSS_187'], params: { longDays: 90, shortDays: 60, thresholdYears: 10 } },
+  { key: 'UNDERTRIAL_RELEASE', name: 'Maximum detention of undertrial prisoners',
+    description: 'Release on bond after a fraction of the maximum sentence is spent in custody.',
+    provisionCodes: ['BNSS_479'], params: { generalFraction: 0.5, firstTimeFraction: 0.3333 } },
+  { key: 'MAGISTRATE_TRIAL_DELAY', name: 'Bail when Magistrate trial is delayed',
+    description: 'Release on bail if a Magistrate trial is not concluded within the set number of days from the first date fixed for evidence.',
+    provisionCodes: ['BNSS_480_6'], params: { days: 60 } },
+  { key: 'MANDATORY_CONDITIONS', name: 'Mandatory bail conditions',
+    description: 'Serious offences attract the mandatory conditions in BNSS s.480(3).',
+    provisionCodes: ['BNSS_480_3', 'BNSS_485'], params: { years: 7, chapters: ['VI', 'VII', 'XVII'] } },
+  { key: 'ARREST_SAFEGUARDS', name: 'Safeguards on arrest',
+    description: 'Flags possible violations of arrest safeguards (24-hour production, grounds of arrest, informing relatives).',
+    provisionCodes: ['BNSS_47', 'BNSS_48', 'BNSS_58', 'CONST_21_22'], params: { productionHours: 24 } },
+  { key: 'LEGAL_AID', name: 'Free legal aid',
+    description: 'Highlights the right to free legal aid when the person has no lawyer.',
+    provisionCodes: ['BNSS_341'], params: {} },
+  { key: 'SPECIAL_LAWS', name: 'Special statutes with stricter bail',
+    description: 'Warns when NDPS, UAPA, PMLA or POCSO is involved, since general BNSS rules may be overridden.',
+    provisionCodes: ['NDPS_37', 'UAPA_43D', 'PMLA_45', 'POCSO'], params: {} },
+];

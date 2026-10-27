@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin – Bail Reckoner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header id="site-header"></header>
+  <main class="container">
+    <div id="admin-msg" class="alert-box hidden" role="status"></div>
+
+    <!-- DASHBOARD -->
+    <section data-panel="dashboard" class="hidden">
+      <section class="hero">
+        <h1>Admin dashboard</h1>
+        <p>Maintain offences, legal provisions and bail rules. Rule changes are saved as <strong>pending</strong> and only take effect after <strong>Verify &amp; publish</strong>.</p>
+      </section>
+      <div class="stats" id="stats"></div>
+      <div class="grid-2">
+        <section class="card"><h2>Most-assessed offences</h2><div id="dash-top-offences"></div></section>
+        <section class="card"><h2>Pending rule changes</h2><div id="dash-pending"></div></section>
+      </div>
+    </section>
+
+    <!-- RULES -->
+    <section data-panel="rules" class="hidden">
+      <section class="hero"><h1>Bail rules</h1><p>Changes are saved as <strong>pending</strong> and only affect assessments after <strong>Verify &amp; publish</strong>, which increases the rule version.</p></section>
+      <div id="rules-panel"></div>
+    </section>
+
+    <!-- OFFENCES -->
+    <section data-panel="offences" class="hidden">
+      <section class="hero"><h1>Offences</h1><p>BNS offences shown in the case form, with their classification under the First Schedule of the BNSS.</p></section>
+      <form id="offence-form" class="editor hidden" novalidate>
+        <h2 id="offence-form-title">Add offence</h2>
+        <input type="hidden" name="_id">
+        <div class="grid-3">
+          <div class="field"><label>BNS section</label><input type="text" name="section" required placeholder="e.g. 303(2)"></div>
+          <div class="field"><label>Old IPC section</label><input type="text" name="ipc" placeholder="e.g. 379"></div>
+          <div class="field"><label>BNS chapter</label><input type="text" name="chapter" placeholder="e.g. XVII"></div>
+        </div>
+        <div class="field"><label>Title</label><input type="text" name="title" required></div>
+        <div class="grid-2">
+          <div class="field"><label>Category</label><input type="text" name="category"></div>
+          <div class="field"><label>Triable by</label>
+            <select name="triableBy"><option>Any Magistrate</option><option>Magistrate of the first class</option><option>Court of Session</option></select></div>
+        </div>
+        <div class="field"><label>Punishment (as text)</label><input type="text" name="punishment"></div>
+        <div class="grid-3">
+          <div class="field"><label>Max imprisonment (years)<span class="hint">Leave empty if life/death</span></label><input type="number" step="0.01" name="maxYears"></div>
+          <div class="field"><label>Minimum (years)</label><input type="number" step="0.01" name="minYears"></div>
+          <div class="field"><label>&nbsp;</label>
+            <label class="check"><input type="checkbox" name="maxLife"> Life imprisonment possible</label>
+            <label class="check"><input type="checkbox" name="death"> Death penalty possible</label></div>
+        </div>
+        <label class="check"><input type="checkbox" name="bailable"> Bailable</label>
+        <label class="check"><input type="checkbox" name="cognizable"> Cognizable</label>
+        <label class="check"><input type="checkbox" name="active" checked> Active (shown in the case form)</label>
+        <div class="row-actions" style="margin-top:12px">
+          <button class="btn btn-primary" type="submit">Save offence</button>
+          <button class="btn btn-ghost" type="button" id="offence-cancel">Cancel</button>
+        </div>
+      </form>
+      <div class="section-title" style="margin-top:0"><h2>All offences</h2><button type="button" class="btn btn-accent btn-sm" id="offence-add">+ Add offence</button></div>
+      <div class="card table-wrap" style="padding:0" id="offence-table"></div>
+    </section>
+
+    <!-- PROVISIONS -->
+    <section data-panel="provisions" class="hidden">
+      <section class="hero"><h1>Provisions</h1><p>Legal provisions cited in assessments and shown in the legal library.</p></section>
+      <form id="provision-form" class="editor hidden" novalidate>
+        <h2 id="provision-form-title">Edit provision</h2>
+        <input type="hidden" name="_id">
+        <div class="grid-3">
+          <div class="field"><label>Code<span class="hint">Used by the rule engine</span></label><input type="text" name="code" required></div>
+          <div class="field"><label>Act</label><input type="text" name="act"></div>
+          <div class="field"><label>Section</label><input type="text" name="section"></div>
+        </div>
+        <div class="grid-2">
+          <div class="field"><label>Old (CrPC) section</label><input type="text" name="oldSection"></div>
+          <div class="field"><label>Type</label><select name="type"><option value="bail">Bail</option><option value="right">Right</option><option value="condition">Condition</option><option value="special">Special law</option></select></div>
+        </div>
+        <div class="field"><label>Title</label><input type="text" name="title" required></div>
+        <div class="field"><label>Legal summary</label><textarea name="summary"></textarea></div>
+        <div class="field"><label>Plain-language explanation</label><textarea name="plain"></textarea></div>
+        <div class="field"><label>Reference URL</label><input type="text" name="reference"></div>
+        <div class="row-actions"><button class="btn btn-primary" type="submit">Save provision</button><button class="btn btn-ghost" type="button" id="provision-cancel">Cancel</button></div>
+      </form>
+      <div class="section-title" style="margin-top:0"><h2>All provisions</h2><button type="button" class="btn btn-accent btn-sm" id="provision-add">+ Add provision</button></div>
+      <div class="card" id="provision-list"></div>
+    </section>
+
+    <!-- USERS -->
+    <section data-panel="users" class="hidden">
+      <section class="hero"><h1>Users</h1><p>Search accounts, deactivate or reactivate users, reset passwords and create other administrators. Public sign-up only ever creates normal users.</p></section>
+      <div class="stats" id="user-stats"></div>
+      <section class="card" style="margin-bottom:20px"><h2>Most-assessed offences</h2><div id="users-top-offences"></div></section>
+
+      <form id="admin-create-form" class="editor hidden" novalidate>
+        <h2>Create admin account</h2>
+        <div class="grid-3">
+          <div class="field"><label for="ac-name">Name</label><input type="text" id="ac-name" name="name" maxlength="80" required></div>
+          <div class="field"><label for="ac-email">Email</label><input type="email" id="ac-email" name="email" required></div>
+          <div class="field"><label for="ac-pass">Temporary password<span class="hint">8+ characters, including a number</span></label><input type="password" id="ac-pass" name="password" autocomplete="new-password" required></div>
+        </div>
+        <div class="row-actions"><button class="btn btn-primary" type="submit">Create admin</button><button class="btn btn-ghost" type="button" id="admin-create-cancel">Cancel</button></div>
+      </form>
+
+      <form id="reset-form" class="editor hidden" novalidate>
+        <h2 id="reset-title">Reset password</h2>
+        <input type="hidden" name="id">
+        <div class="field" style="max-width:360px"><label for="rp-pass">New password<span class="hint">8+ characters, including a number. Share it with the user securely.</span></label><input type="password" id="rp-pass" name="password" autocomplete="new-password" required></div>
+        <div class="row-actions"><button class="btn btn-primary" type="submit">Reset password</button><button class="btn btn-ghost" type="button" id="reset-cancel">Cancel</button></div>
+      </form>
+
+      <div class="section-title" style="margin-top:0">
+        <input type="search" id="user-search" placeholder="Search by name or email…" aria-label="Search users" style="max-width:360px">
+        <button type="button" class="btn btn-accent btn-sm" id="admin-create">+ Create admin</button>
+      </div>
+      <div class="card table-wrap" style="padding:0" id="user-table"></div>
+    </section>
+
+    <!-- CHANGE LOG -->
+    <section data-panel="changelog" class="hidden">
+      <section class="hero"><h1>Change log</h1><p>Every change made in the admin module, newest first.</p></section>
+      <div class="card table-wrap" style="padding:0" id="log-table"></div>
+    </section>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="/js/api.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+node_modules/
+*.log
+.DS_Store
+
+# Secrets — never commit real environment files
+.env
+.env.*
+!.env.example
+
+# Project report / exported documents are kept out of the repository
+*.docx
+*.pdf

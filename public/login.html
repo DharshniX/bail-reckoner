@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Log in – Bail Reckoner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header id="site-header"></header>
+  <main class="container auth-page">
+    <nav class="portal-switch" aria-label="Choose login portal">
+      <a href="/login" class="active" aria-current="page">User</a>
+      <a href="/admin/login">Admin</a>
+    </nav>
+
+    <div class="auth-split">
+      <aside class="auth-aside">
+        <p class="eyebrow">User portal</p>
+        <h2>Welcome to Bail Reckoner</h2>
+        <p>Your account keeps every assessment in one place, so you can come back to it when the case moves forward.</p>
+        <ul class="benefits">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span><strong>Save your history</strong> — reopen past assessments anytime.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span><strong>Track deadlines</strong> — default bail and undertrial timelines.</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span><strong>Print or share</strong> — save results as PDF for your lawyer.</span></li>
+        </ul>
+        <!-- Document + scales illustration -->
+        <svg class="auth-art" viewBox="0 0 240 150" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="18" y="14" width="96" height="124" rx="8"/>
+          <path d="M36 40h60M36 56h60M36 72h44M36 92h60M36 108h32"/>
+          <path d="M170 30v96M140 50h60M140 50l-16 36M140 50l16 36M200 50l-16 36M200 50l16 36"/>
+          <path d="M122 86h36a18 9 0 0 1-36 0zM182 86h36a18 9 0 0 1-36 0z"/>
+          <path d="M152 132h36"/>
+        </svg>
+      </aside>
+
+      <section class="auth-main">
+        <div class="tabs" role="tablist">
+          <button type="button" class="active" data-tab="login" role="tab" aria-selected="true">Log in</button>
+          <button type="button" data-tab="register" role="tab" aria-selected="false">Create account</button>
+        </div>
+        <div id="auth-msg" class="alert-box hidden" role="alert"></div>
+
+        <form id="login-form" novalidate>
+          <div class="field"><label for="l-email">Email</label><input type="email" id="l-email" name="email" autocomplete="email" required></div>
+          <div class="field"><label for="l-pass">Password</label>
+            <div class="pw-field"><input type="password" id="l-pass" name="password" autocomplete="current-password" required><button type="button" class="pw-toggle" aria-pressed="false" aria-label="Show password">Show</button></div></div>
+          <button class="btn btn-primary btn-block" type="submit">Log in</button>
+          <p class="small muted form-foot">New here? <a href="/login?mode=register" data-switch="register">Create a free account</a></p>
+        </form>
+
+        <form id="register-form" class="hidden" novalidate>
+          <div class="field"><label for="r-name">Full name</label><input type="text" id="r-name" name="name" autocomplete="name" maxlength="80" required></div>
+          <div class="field"><label for="r-email">Email</label><input type="email" id="r-email" name="email" autocomplete="email" required></div>
+          <div class="field"><label for="r-pass">Password</label>
+            <div class="pw-field"><input type="password" id="r-pass" name="password" autocomplete="new-password" aria-describedby="pw-rules" required><button type="button" class="pw-toggle" aria-pressed="false" aria-label="Show password">Show</button></div>
+            <ul class="pw-rules" id="pw-rules">
+              <li data-rule="len">At least 8 characters</li>
+              <li data-rule="num">Includes a number</li>
+            </ul></div>
+          <button class="btn btn-primary btn-block" type="submit">Create account</button>
+          <p class="small muted form-foot">Your account is always a normal user account. You can use the calculator without one.</p>
+        </form>
+      </section>
+    </div>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="/js/api.js"></script>
+  <script src="/js/login.js"></script>
+</body>
+</html>

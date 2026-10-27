@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Portal – Bail Reckoner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="portal-page">
+  <header id="site-header"></header>
+  <main class="container auth-page">
+    <nav class="portal-switch is-admin" aria-label="Choose login portal">
+      <a href="/login">User</a>
+      <a href="/admin/login" class="active" aria-current="page">Admin</a>
+    </nav>
+
+    <div class="auth-split is-admin">
+      <aside class="auth-aside">
+        <span class="portal-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+        </span>
+        <h1>Admin Portal</h1>
+        <p class="restricted">Authorised personnel only</p>
+        <ul class="benefits">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Maintain offences, provisions and bail rules</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Rule changes go live only after verify &amp; publish</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg><span>Every action is recorded in the change log</span></li>
+        </ul>
+        <p class="aside-foot">Sessions expire after 8 hours. Accounts lock for 15 minutes after 5 failed attempts.</p>
+      </aside>
+
+      <section class="auth-main">
+        <h2>Sign in</h2>
+        <p class="muted small">Use the administrator account issued to you. There is no public sign-up.</p>
+        <div id="auth-msg" class="alert-box hidden" role="alert"></div>
+        <form id="admin-login-form" novalidate>
+          <div class="field"><label for="a-email">Admin email</label><input type="email" id="a-email" name="email" autocomplete="username" required></div>
+          <div class="field"><label for="a-pass">Password</label>
+            <div class="pw-field"><input type="password" id="a-pass" name="password" autocomplete="current-password" required><button type="button" class="pw-toggle" aria-pressed="false" aria-label="Show password">Show</button></div></div>
+          <button class="btn btn-accent btn-block" type="submit">Sign in to admin portal</button>
+        </form>
+        <p class="small muted form-foot">Not an administrator? <a href="/login">Go to the user login</a></p>
+      </section>
+    </div>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="/js/api.js"></script>
+  <script src="/js/admin-login.js"></script>
+</body>
+</html>

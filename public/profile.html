@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Profile – Bail Reckoner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header id="site-header"></header>
+  <main class="container">
+    <section class="hero"><h1>Your profile</h1><p>Update your name and password, or delete your account.</p></section>
+    <div id="profile-msg" class="alert-box hidden" role="status"></div>
+
+    <div class="grid-2">
+      <form id="name-form" class="card" novalidate>
+        <h2>Account details</h2>
+        <dl class="profile-facts">
+          <div class="wide"><dt>Email</dt><dd id="p-email"></dd></div>
+          <div><dt>Member since</dt><dd id="p-since"></dd></div>
+        </dl>
+        <div class="field"><label for="p-name">Full name</label><input type="text" id="p-name" name="name" autocomplete="name" maxlength="80" required></div>
+        <button class="btn btn-primary" type="submit">Save name</button>
+      </form>
+
+      <form id="password-form" class="card" novalidate>
+        <h2>Change password</h2>
+        <div class="field"><label for="p-current">Current password</label><input type="password" id="p-current" name="currentPassword" autocomplete="current-password" required></div>
+        <div class="field"><label for="p-new">New password<span class="hint">At least 8 characters, including a number</span></label><input type="password" id="p-new" name="newPassword" autocomplete="new-password" required></div>
+        <div class="field"><label for="p-confirm">Confirm new password</label><input type="password" id="p-confirm" name="confirm" autocomplete="new-password" required></div>
+        <button class="btn btn-primary" type="submit">Change password</button>
+        <p class="small muted" style="margin-top:10px">Other devices will be logged out.</p>
+      </form>
+    </div>
+
+    <form id="delete-form" class="card danger-zone" novalidate>
+      <h2>Delete account</h2>
+      <p>This permanently deletes your account and all your saved assessments. It cannot be undone.</p>
+      <div class="field" style="max-width:360px"><label for="p-delete-pass">Enter your password to confirm</label><input type="password" id="p-delete-pass" name="password" autocomplete="current-password" required></div>
+      <button class="btn btn-danger" type="submit">Delete my account</button>
+    </form>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="/js/api.js"></script>
+  <script src="/js/profile.js"></script>
+</body>
+</html>

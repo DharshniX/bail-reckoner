@@ -1,0 +1,24 @@
+# Render Blueprint — creates the Bail Reckoner web service.
+# Render → New → Blueprint → pick this repository. Values marked "sync: false" are
+# secrets: Render asks for them once in the dashboard and they never live in git.
+services:
+  - type: web
+    name: bail-reckoner
+    runtime: node
+    plan: free
+    region: singapore          # closest Render region to India
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true           # redeploy on every push to the main branch
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI       # MongoDB Atlas connection string (includes /bail_reckoner)
+        sync: false
+      - key: JWT_SECRET        # Render generates a long random secret
+        generateValue: true
+      - key: ADMIN_EMAIL       # first admin account, created on first start
+        sync: false
+      - key: ADMIN_PASSWORD    # 8+ characters with a number; change it after first login
+        sync: false

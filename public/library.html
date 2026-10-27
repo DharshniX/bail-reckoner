@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Legal library – Bail Reckoner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header id="site-header"></header>
+  <main class="container">
+    <section class="hero">
+      <h1>Legal library</h1>
+      <p>The provisions Bail Reckoner uses, with the corresponding old CrPC section and a plain-language explanation.</p>
+    </section>
+    <div class="offence-tools">
+      <input type="search" id="lib-search" placeholder="Search provisions, e.g. 479, default bail, CrPC 437…" aria-label="Search provisions">
+      <select id="lib-type" aria-label="Filter by type">
+        <option value="">All types</option><option value="bail">Bail provisions</option><option value="right">Rights</option>
+        <option value="condition">Conditions</option><option value="special">Special laws</option>
+      </select>
+    </div>
+    <div class="card" id="lib-list"><p class="empty">Loading…</p></div>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="/js/api.js"></script>
+  <script src="/js/library.js"></script>
+</body>
+</html>

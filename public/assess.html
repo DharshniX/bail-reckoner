@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assess a case – Bail Reckoner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header id="site-header"></header>
+
+  <main class="container">
+    <section class="hero hero-compact">
+      <h1>Assess a case</h1>
+      <p>Four short steps. Bail Reckoner checks the details against the bail provisions of the BNSS, 2023 and explains which may apply, why, and what to do next.</p>
+      <p class="notice">This tool gives legal <strong>information</strong>, not legal advice. It cannot predict what a court will decide.</p>
+    </section>
+
+    <form id="assess-form" class="card" novalidate>
+      <!-- Completed steps become clickable so the user can jump back (and forward again) -->
+      <ol class="steps" id="steps">
+        <li class="active"><button type="button" data-goto="0" aria-current="step">Offences</button></li>
+        <li><button type="button" data-goto="1" disabled>Custody &amp; stage</button></li>
+        <li><button type="button" data-goto="2" disabled>About the person</button></li>
+        <li><button type="button" data-goto="3" disabled>Arrest procedure</button></li>
+      </ol>
+      <div class="progress-row">
+        <div class="progress" role="progressbar" aria-label="Assessment progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="progress-fill"></i></div>
+        <span id="progress-label">Step 1 of 4 · 0% complete</span>
+      </div>
+
+      <!-- STEP 1: Offences -->
+      <section class="step-panel active" data-step="0">
+        <h2>Which offences are alleged?</h2>
+        <p class="muted">Select every section mentioned in the FIR or complaint. You can search by BNS section, old IPC section or name.</p>
+        <div class="offence-tools">
+          <input type="search" id="offence-search" placeholder="Search e.g. 303, 379, theft, cheating…" aria-label="Search offences">
+          <select id="offence-filter" aria-label="Filter by classification">
+            <option value="">All offences</option>
+            <option value="bailable">Bailable only</option>
+            <option value="nonbailable">Non-bailable only</option>
+          </select>
+        </div>
+        <div class="offence-list" id="offence-list" role="group" aria-label="Offences"><p class="empty">Loading offences…</p></div>
+        <div class="selected-chips" id="selected-chips" aria-live="polite"></div>
+      </section>
+
+      <!-- STEP 2: Custody & stage -->
+      <section class="step-panel" data-step="1">
+        <h2>Where does the case stand now?</h2>
+        <div class="field">
+          <label>Custody status</label>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="custodyStatus" value="not_arrested" checked><span>Not arrested yet<small>FIR registered / fears arrest</small></span></label>
+            <label class="choice"><input type="radio" name="custodyStatus" value="in_custody"><span>In custody<small>Police or judicial custody</small></span></label>
+            <label class="choice"><input type="radio" name="custodyStatus" value="released_on_bail"><span>Released on bail<small>Already out on bail</small></span></label>
+          </div>
+        </div>
+
+        <div data-show="not_arrested">
+          <label class="check"><input type="checkbox" name="apprehendsArrest"> The person fears they may be arrested</label>
+          <label class="check"><input type="checkbox" name="noticeReceived"> A notice to appear has been received from the police</label>
+        </div>
+
+        <div data-show="in_custody released_on_bail">
+          <div class="grid-2">
+            <div class="field"><label for="arrestDate">Date of arrest</label><input type="date" id="arrestDate" name="arrestDate"></div>
+            <div class="field" data-show="in_custody"><label for="firstRemandDate">Date of first remand by Magistrate<span class="hint">Leave empty to use the arrest date</span></label><input type="date" id="firstRemandDate" name="firstRemandDate"></div>
+          </div>
+        </div>
+
+        <div data-show="in_custody">
+          <div class="field">
+            <label for="investigationStage">Stage of the case</label>
+            <select id="investigationStage" name="investigationStage">
+              <option value="investigation">Investigation going on (charge sheet not filed)</option>
+              <option value="chargesheet_filed">Charge sheet filed</option>
+              <option value="trial">Trial has started</option>
+            </select>
+          </div>
+          <div data-stage="chargesheet_filed trial">
+            <label class="check"><input type="checkbox" name="defaultBailApplied"> A default bail application was filed <em>before</em> the charge sheet</label>
+          </div>
+          <div class="field" data-stage="trial"><label for="evidenceStartDate">First date fixed for taking evidence<span class="hint">Used for the 60-day Magistrate trial rule</span></label><input type="date" id="evidenceStartDate" name="evidenceStartDate"></div>
+          <label class="check"><input type="checkbox" name="unableToFurnishBail"> The person cannot arrange bail money or a surety</label>
+        </div>
+      </section>
+
+      <!-- STEP 3: About the person -->
+      <section class="step-panel" data-step="2">
+        <h2>About the accused person</h2>
+        <p class="muted">Some provisions give special treatment based on age, gender, health and past record.</p>
+        <div class="grid-3">
+          <div class="field"><label for="age">Age</label><input type="number" id="age" name="age" min="7" max="120" placeholder="e.g. 32"></div>
+          <div class="field"><label for="gender">Gender</label>
+            <select id="gender" name="gender"><option value="">Prefer not to say</option><option value="male">Male</option><option value="female">Female</option><option value="other">Other</option></select></div>
+          <div class="field"><label for="priorConviction">Previous convictions</label>
+            <select id="priorConviction" name="priorConviction">
+              <option value="none">None</option>
+              <option value="serious">Convicted of an offence punishable with 7+ years, life or death</option>
+              <option value="multiple">Two or more convictions for offences of 3–7 years</option>
+            </select></div>
+        </div>
+        <label class="check"><input type="checkbox" name="firstTimeOffender" checked> Never convicted of any offence before (first-time offender)</label>
+        <label class="check"><input type="checkbox" name="sickOrInfirm"> The person is sick or infirm</label>
+        <label class="check"><input type="checkbox" name="otherPendingCases"> Other criminal cases are pending against the person</label>
+        <label class="check"><input type="checkbox" name="hasLawyer"> The person already has a lawyer</label>
+
+        <div class="field" style="margin-top:16px">
+          <label>Does the case also involve any of these special laws?<span class="hint">These have stricter bail rules that override the general provisions.</span></label>
+          <div class="choices">
+            <label class="check"><input type="checkbox" name="specialLaws" value="NDPS"> NDPS Act (drugs)</label>
+            <label class="check"><input type="checkbox" name="specialLaws" value="UAPA"> UAPA (terrorism)</label>
+            <label class="check"><input type="checkbox" name="specialLaws" value="PMLA"> PMLA (money laundering)</label>
+            <label class="check"><input type="checkbox" name="specialLaws" value="POCSO"> POCSO Act (child protection)</label>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 4: Arrest procedure -->
+      <section class="step-panel" data-step="3">
+        <h2>How was the arrest carried out?</h2>
+        <div id="arrest-questions">
+          <div class="q-row"><p>Was the person produced before a Magistrate within 24 hours of arrest?</p>
+            <div class="seg" role="radiogroup"><label><input type="radio" name="producedWithin24h" value="yes"><span>Yes</span></label><label><input type="radio" name="producedWithin24h" value="no"><span>No</span></label><label><input type="radio" name="producedWithin24h" value="unknown" checked><span>Not sure</span></label></div></div>
+          <div class="q-row"><p>Were the grounds of arrest explained to the person?</p>
+            <div class="seg" role="radiogroup"><label><input type="radio" name="informedGrounds" value="yes"><span>Yes</span></label><label><input type="radio" name="informedGrounds" value="no"><span>No</span></label><label><input type="radio" name="informedGrounds" value="unknown" checked><span>Not sure</span></label></div></div>
+          <div class="q-row"><p>Was a relative or friend informed about the arrest?</p>
+            <div class="seg" role="radiogroup"><label><input type="radio" name="relativeInformed" value="yes"><span>Yes</span></label><label><input type="radio" name="relativeInformed" value="no"><span>No</span></label><label><input type="radio" name="relativeInformed" value="unknown" checked><span>Not sure</span></label></div></div>
+        </div>
+        <p id="arrest-skip" class="muted hidden">The person has not been arrested, so these questions are skipped. Click <strong>Get assessment</strong>.</p>
+      </section>
+
+      <div id="form-error" class="alert-box error hidden" role="alert"></div>
+      <div class="step-actions">
+        <button type="button" class="btn btn-ghost" id="back-btn" disabled>Back</button>
+        <button type="button" class="btn btn-primary" id="next-btn">Next</button>
+        <button type="submit" class="btn btn-accent hidden" id="submit-btn">Get assessment</button>
+      </div>
+    </form>
+
+    <div id="results" class="results hidden"></div>
+  </main>
+
+  <footer id="site-footer"></footer>
+  <script src="/js/api.js"></script>
+  <script src="/js/results.js"></script>
+  <script src="/js/assess.js"></script>
+</body>
+</html>
